@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - 4200:4200
+
+volumes:
+  notused:

@@ -1,0 +1,16 @@
+{
+  "APP_NAME": "MAD-Mex",
+  "About": "Nosotros",
+  "Hello world !": "Hello world !",
+  "Home": "Inicio",
+  "Logged in as": "Sesión iniciada como",
+  "Login": "Iniciar sesión",
+  "Logout": "Cerrar sesión",
+  "Password": "Contraseña",
+  "Password is required": "La contraseña es requerida",
+  "Username": "Usuario",
+  "Username is required": "Usuario es requerido",
+  "Username or password incorrect.": "Usuario o contraseña incorrectos.",
+  "Remember": "Recordar",
+  "Version": "Versión"
+}

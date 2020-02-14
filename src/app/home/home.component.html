@@ -1,0 +1,124 @@
+<div class="container">
+  <!--<mat-card>
+    <p>
+      <img class="logo" src="assets/ngx-rocket-logo.png" alt="angular logo" />
+    </p>
+    <mat-card-content>
+      <mat-card-title translate>Hello world !</mat-card-title>
+      <mat-card-subtitle>
+        <app-loader [isLoading]="isLoading" size="1.5"></app-loader>
+        <q [hidden]="isLoading">{{ quote }}</q>
+      </mat-card-subtitle>
+    </mat-card-content>
+  </mat-card>-->
+  <div class="map" id="map" style="width: 69vw; height: 85vh; border: solid 1px; display: inline-block; position: absolute; left: 5px; top: 10px;">
+  </div>
+  <div style="display: inline-block; position: absolute; width: 29vw; height: 85vh; top: 10px; right: 5px;">
+    <mat-card *ngIf="!currentPolygon">
+      <mat-card-content>
+        <h4>Da click sobre algún polígono para etiquetarlo</h4>
+      </mat-card-content>
+    </mat-card>
+    <mat-card *ngIf="currentPolygon?.interpreted">
+      <mat-card-content>
+        <h4>Polígono etiquetado</h4>
+        <h3>Conjunto de datos {{currentPolygon.training_set}}</h3>
+        <br/><br/>
+        <mat-list>
+          <mat-list-item>
+            <p matLine>
+              <span><b>Etiquetado por: </b></span>
+              <span class="demo-2">{{currentPolygon.user_id}}</span>
+            </p>
+          </mat-list-item>
+          <mat-list-item>
+            <p matLine>
+              <span><b>Institución: </b></span>
+              <span class="demo-2">{{currentPolygon.institution_id}}</span>
+            </p>
+          </mat-list-item>
+          <mat-list-item>
+            <p matLine>
+              <span><b>Etiqueta: </b></span>
+              <span class="demo-2">{{currentPolygon.interpret_tag_id}}</span>
+            </p>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+    <mat-card *ngIf="currentPolygon && !currentPolygon.interpreted">
+      <mat-card-content>
+        <h4>Etiquetar polígono</h4>
+        <h3>Conjunto de datos {{currentPolygon.training_set}}</h3>
+        <br/><br/>
+        <mat-form-field color="accent">
+          <mat-label>Tipo de cultivo:</mat-label>
+          <mat-select [(ngModel)]="polygonType">
+            <mat-option *ngFor="let t of polygonTypeList" [value]="t.numeric_code">
+              {{t.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br/><br/>
+        <button mat-raised-button color="accent" [disabled]="polygonType == null" (click)="tagPolygon()">Etiquetar</button>
+      </mat-card-content>
+    </mat-card>
+    <!--<mat-card>
+      <mat-card-content>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Inicio">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker2" placeholder="Fin">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Satélite</mat-label>
+      <mat-select>
+        <mat-option [value]="1">
+          Satélite 1
+        </mat-option>
+        <mat-option [value]="2">
+          Satélite 2
+        </mat-option>
+        <mat-option [value]="3">
+          Satélite 3
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br/>
+    <button mat-stroked-button color="accent">Buscar</button>
+  </mat-card-content>
+  </mat-card>-->
+  <!--<br/><br/>
+  <h3>Usuarios</h3>
+  <mat-list>
+    <mat-list-item *ngFor="let u of users">{{u.id}} {{u.name}} </mat-list-item>
+  </mat-list>
+  <br/><br/>-->
+  <!--<apx-chart #chart2 
+  [series]="[58,64,10.04,96.35]"
+  [labels]="['P1', 'P2', 'P3', 'P4']"
+  [chart]="{
+      height: 350,
+      type: 'donut',
+      zoom: {
+          enabled: false
+      },
+      shadow: {
+          enabled: true,
+          color: '#000',
+          top: 18,
+          left: 7,
+          blur: 10,
+          opacity: 1
+      }
+  }"
+  
+  [title]="{ text: 'Estadísticas' }">
+</apx-chart>-->
+  </div>
+</div>
