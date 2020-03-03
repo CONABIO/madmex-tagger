@@ -19,7 +19,8 @@ export const environment = {
   supportedLanguages: ['en-US', 'fr-FR'],
   mapbox: {
     // tslint:disable-next-line:max-line-length
-    accessToken: 'pk.eyJ1IjoibnRyaW5pZGFkLWNvbmFiaW8iLCJhIjoiY2s1NWc5d3B3MGpsazNkc2JvdDl0dmswOSJ9.7aVSqlGPrLBHjt23HjBgPA',
+    accessToken:
+      'pk.eyJ1IjoibnRyaW5pZGFkLWNvbmFiaW8iLCJhIjoiY2s1NWc5d3B3MGpsazNkc2JvdDl0dmswOSJ9.7aVSqlGPrLBHjt23HjBgPA',
     // style: 'mapbox://styles/ntrinidad-conabio/ck55h9gth0f9i1ct1oab02wsb'
     style: 'mapbox://styles/ntrinidad-conabio/ck680atts0k851inxdfu5p1gh'
   }

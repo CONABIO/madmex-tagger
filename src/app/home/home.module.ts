@@ -11,7 +11,6 @@ import { HomeComponent } from './home.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { FormsModule } from '@angular/forms';
 
-
 @NgModule({
   imports: [
     CommonModule,

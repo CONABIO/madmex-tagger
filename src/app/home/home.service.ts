@@ -5,11 +5,9 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class HomeService {
-
-  constructor(public http: HttpClient) { }
+  constructor(public http: HttpClient) {}
 
   getAgriculturaData() {
-
     return new Promise(resolve => {
       this.http.get('http://snmb.conabio.gob.mx:3008/v1/poligono/agricultura').subscribe(
         data => {
@@ -53,16 +51,16 @@ export class HomeService {
   updatePoligono(polygon_id: string, params: any) {
     return new Promise(resolve => {
       this.http
-      // tslint:disable-next-line:max-line-length
-      .put(`http://snmb.conabio.gob.mx:3008/v1/update_poligono/${polygon_id}`, params)
-      .subscribe(
-        data => {
-          resolve(true);
-        },
-        err => {
-          console.log(err);
-        }
-      );
+        // tslint:disable-next-line:max-line-length
+        .put(`http://snmb.conabio.gob.mx:3008/v1/update_poligono/${polygon_id}`, params)
+        .subscribe(
+          data => {
+            resolve(true);
+          },
+          err => {
+            console.log(err);
+          }
+        );
     });
   }
 }

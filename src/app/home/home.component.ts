@@ -3,7 +3,7 @@ import { finalize } from 'rxjs/operators';
 
 import { QuoteService } from './quote.service';
 import * as mapboxgl from 'mapbox-gl';
-import * as turf from '@turf/turf'
+import * as turf from '@turf/turf';
 
 import { environment } from '@env/environment';
 import { HomeService } from './home.service';
@@ -27,12 +27,9 @@ export class HomeComponent implements OnInit {
   polygons: any = [];
   currentPolygon: any = null;
   polygonTypeList: any = [];
-  polygonType: any = null; 
+  polygonType: any = null;
 
-  constructor(
-    private quoteService: QuoteService,
-    private homeService: HomeService
-  ) {
+  constructor(private quoteService: QuoteService, private homeService: HomeService) {
     mapboxgl.accessToken = environment.mapbox.accessToken;
   }
 
@@ -49,9 +46,12 @@ export class HomeComponent implements OnInit {
       .subscribe((quote: string) => {
         this.quote = quote;
       });
-    this.homeService.getCatCultivos().then(data => {
-      this.polygonTypeList = data;
-    }).catch(error => console.log(error));
+    this.homeService
+      .getCatCultivos()
+      .then(data => {
+        this.polygonTypeList = data;
+      })
+      .catch(error => console.log(error));
   }
 
   initMap() {
@@ -97,31 +97,27 @@ export class HomeComponent implements OnInit {
           padding: 20
         });
         this.map.addLayer({
-          'id': 'polygon-fill',
-          'type': 'fill',
-          'source': 'polygons-src',
-          'paint': {
+          id: 'polygon-fill',
+          type: 'fill',
+          source: 'polygons-src',
+          paint: {
             'fill-color': 'rgba(255, 255, 255,0.5)',
             'fill-opacity': 0.3
           }
         });
-  
+
         this.map.addLayer({
-          'id': 'pol',
-          'type': 'line',
-          'source': 'polygons-src',
-          'layout': {
+          id: 'pol',
+          type: 'line',
+          source: 'polygons-src',
+          layout: {
             'line-join': 'round',
             'line-cap': 'round'
-            },
-            'paint': {
-            'line-color': ['case',
-              ['match', ['get', 'interpreted'], 'zzzz', true, false],
-              '#888',
-              '#9B042B',
-            ],
+          },
+          paint: {
+            'line-color': ['case', ['match', ['get', 'interpreted'], 'zzzz', true, false], '#888', '#9B042B'],
             'line-width': 1
-            }
+          }
         });
 
         this.map.on('click', 'polygon-fill', e => {
@@ -130,14 +126,10 @@ export class HomeComponent implements OnInit {
           });
           const properties = e.features[0].properties;
           this.currentPolygon = properties;
-          
         });
       } catch (error) {
         console.log(error);
       }
-      
-
-      
     });
   }
 
@@ -152,38 +144,37 @@ export class HomeComponent implements OnInit {
 
     try {
       this.polygons = await this.homeService.getAgriculturaData();
-        const features = this.polygons.map(p => {
-          return {
-            type: 'Feature',
-            geometry: p.the_geom,
-            properties: {
-              id: p.tob_id,
-              training_set: p.training_set,
-              interpreted: p.interpreted,
-              institution_id: p.institution_id,
-              interpret_tag_id: p.interpret_tag_id,
-              user_id: p.user_id
-            }
-          };
-        });
-
-        geojson = {
-          type: 'geojson',
-          data: {
-            type: 'FeatureCollection',
-            features
+      const features = this.polygons.map(p => {
+        return {
+          type: 'Feature',
+          geometry: p.the_geom,
+          properties: {
+            id: p.tob_id,
+            training_set: p.training_set,
+            interpreted: p.interpreted,
+            institution_id: p.institution_id,
+            interpret_tag_id: p.interpret_tag_id,
+            user_id: p.user_id
           }
-        }
+        };
+      });
 
-        return geojson;
-    } catch(error) {
+      geojson = {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features
+        }
+      };
+
+      return geojson;
+    } catch (error) {
       console.log(error);
       return geojson;
-    } 
-
+    }
   }
 
-  tagPolygon()  {
+  tagPolygon() {
     const params = {
       interpreted: 1,
       institution_id: 1,
@@ -201,16 +192,15 @@ export class HomeComponent implements OnInit {
   }
 
   async resetTagger() {
-    
     try {
       const geojson = await this.getPolygons();
       this.map.getSource('polygons-src').setData(geojson.data);
-      
+
       const bbox = turf.bbox(geojson.data);
       this.map.fitBounds(bbox, {
         padding: 20
       });
-      
+
       this.polygonType = null;
       this.currentPolygon = null;
     } catch (error) {
