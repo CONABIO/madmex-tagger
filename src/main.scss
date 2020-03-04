@@ -229,8 +229,31 @@ $mat-warn: (
 );
 $theme-warn: mat-palette($mat-warn, main, lighter, darker);
 
-$theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
-$altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
+body {
+  --secondary-color: #8a181b;
+  --secondary-lighter-color: rgb(100, 17, 20);
+  --secondary-darker-color: rgb(179, 81, 83);
+  --text-secondary-color: #{$light-primary-text};
+  --text-secondary-lighter-color: #{$dark-primary-text};
+  --text-secondary-darker-color: #{$light-primary-text};
+}
+
+$mat-secondary: (
+  main: #8a181b,
+  lighter: rgb(100, 17, 20),
+  darker: rgb(179, 81, 83),
+  200: /*#b11f16*/ rgb(179, 32, 36),
+  // For slide toggle,
+  contrast: (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text
+  )
+);
+$theme-secondary: mat-palette($mat-secondary, main, lighter, darker);
+
+$theme: mat-light-theme($theme-primary, $theme-accent, $theme-secondary);
+$altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-secondary);
 
 // Theme Init
 @include angular-material-theme($theme);

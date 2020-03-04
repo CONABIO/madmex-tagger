@@ -3,11 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { extract } from '@app/core';
 import { HomeComponent } from './home.component';
+import { PreferencesComponent } from '../preferences/preferences.component';
 import { Shell } from '@app/shell/shell.service';
 
 const routes: Routes = [
   Shell.childRoutes([
-    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: '', redirectTo: '/preferences', pathMatch: 'full' },
+    { path: 'preferences', component: PreferencesComponent, data: { title: extract('Preferencias') } },
     { path: 'home', component: HomeComponent, data: { title: extract('Home') } }
   ])
 ];

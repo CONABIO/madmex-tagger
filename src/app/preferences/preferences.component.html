@@ -1,0 +1,61 @@
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-title>Madmex tagger</mat-card-title>
+    <mat-card-subtitle>Configura los polígonos que deseas etiquetar</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-horizontal-stepper labelPosition="bottom" linear #stepper>
+      <mat-step [stepControl]="trainingSetsForm">
+        <form [formGroup]="trainingSetsForm" class="form-container">
+          <ng-template matStepLabel>Selecciona el conjunto de entrenamiento</ng-template>
+          <br />
+          <mat-form-field color="accent">
+            <mat-label>Conjunto de entrenamiento</mat-label>
+            <mat-select formControlName="trainingSet" required>
+              <mat-option *ngFor="let ts of trainingSets" [value]="ts.id">
+                {{ ts.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="text-right">
+            <button
+              mat-button
+              matStepperNext
+              mat-raised-button
+              color="warn"
+              (click)="getSquares()"
+              [disabled]="!trainingSetsForm.valid"
+            >
+              Siguiente
+            </button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="squaresForm">
+        <ng-template matStepLabel>Selecciona una región</ng-template>
+        <br />
+        <div class="map" id="map" style="width: 80%; height: 45vh; border: solid 1px;"></div>
+        <br />
+        <div class="text-right">
+          <button mat-button matStepperPrevious mat-raised-button color="warn">Anterior</button>
+          <button mat-button matStepperNext mat-raised-button color="warn" [disabled]="!squaresForm.valid">
+            Siguiente
+          </button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Hecho</ng-template>
+        <div class="text-center">
+          <h3>Preferencias</h3>
+          <br />
+          <p>Training set: {{ trainingSetsForm.value.trainingSet }}</p>
+          <p>Cuadro: {{ squaresForm.value.square }}</p>
+        </div>
+        <div class="text-right">
+          <button mat-button matStepperPrevious mat-raised-button color="warn">atrás</button>
+          <a mat-raised-button color="warn" mat-button routerLink="/home">Ir a etiquetador</a>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </mat-card-content>
+</mat-card>

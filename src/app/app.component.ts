@@ -57,6 +57,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.titleService.setTitle(this.translateService.instant(title));
         }
       });
+    this.router.navigate(['']);
   }
 
   ngOnDestroy() {

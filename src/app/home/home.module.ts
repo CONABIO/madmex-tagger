@@ -9,7 +9,8 @@ import { MaterialModule } from '@app/material.module';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PreferencesComponent } from '../preferences/preferences.component';
 
 @NgModule({
   imports: [
@@ -21,8 +22,9 @@ import { FormsModule } from '@angular/forms';
     MaterialModule,
     NgApexchartsModule,
     FormsModule,
+    ReactiveFormsModule,
     HomeRoutingModule
   ],
-  declarations: [HomeComponent]
+  declarations: [HomeComponent, PreferencesComponent]
 })
 export class HomeModule {}
