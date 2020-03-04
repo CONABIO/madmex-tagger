@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import { environment } from '@env/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class HomeService {
   constructor(public http: HttpClient) {}
 
-  getAgriculturaData() {
+  getAgriculturaData(ts: number, sq: number) {
     return new Promise(resolve => {
-      this.http.get('http://snmb.conabio.gob.mx:3008/v1/poligono/agricultura').subscribe(
+      this.http.get(`${environment.serverUrl}/polygon/${ts}/${sq}`).subscribe(
         data => {
           resolve(data ? data : []);
         },
@@ -22,7 +24,7 @@ export class HomeService {
 
   getCatCultivos() {
     return new Promise(resolve => {
-      this.http.get('http://snmb.conabio.gob.mx:3008/v1/madmextag/agricultura').subscribe(
+      this.http.get(`${environment.serverUrl}/madmextag/agricultura`).subscribe(
         data => {
           console.log('Cultivos', data);
           resolve(data ? data : {});

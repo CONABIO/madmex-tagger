@@ -10,7 +10,7 @@ const routes: Routes = [
   Shell.childRoutes([
     { path: '', redirectTo: '/preferences', pathMatch: 'full' },
     { path: 'preferences', component: PreferencesComponent, data: { title: extract('Preferencias') } },
-    { path: 'home', component: HomeComponent, data: { title: extract('Home') } }
+    { path: 'home/:trainingset/:square', component: HomeComponent, data: { title: extract('Home') } }
   ])
 ];
 

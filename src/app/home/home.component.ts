@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { QuoteService } from './quote.service';
 import * as mapboxgl from 'mapbox-gl';
@@ -29,29 +30,26 @@ export class HomeComponent implements OnInit {
   polygonTypeList: any = [];
   polygonType: any = null;
 
-  constructor(private quoteService: QuoteService, private homeService: HomeService) {
+  square: number = null;
+  trainingSet: number = null;
+
+  constructor(private _route: ActivatedRoute, private quoteService: QuoteService, private homeService: HomeService) {
     mapboxgl.accessToken = environment.mapbox.accessToken;
   }
 
   ngOnInit() {
-    this.isLoading = true;
-    this.quoteService
-      .getRandomQuote({ category: 'dev' })
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-          this.initMap();
-        })
-      )
-      .subscribe((quote: string) => {
-        this.quote = quote;
-      });
-    this.homeService
-      .getCatCultivos()
-      .then(data => {
-        this.polygonTypeList = data;
-      })
-      .catch(error => console.log(error));
+    this._route.params.subscribe(async data => {
+      this.trainingSet = data.trainingset;
+      this.square = data.square;
+
+      this.initMap();
+
+      try {
+        this.polygonTypeList = await this.homeService.getCatCultivos();
+      } catch (error) {
+        console.log(error);
+      }
+    });
   }
 
   initMap() {
@@ -61,33 +59,8 @@ export class HomeComponent implements OnInit {
     });
 
     this.map.on('load', async () => {
-      // this.map.resize();
       try {
-        /*this.polygons = await this.homeService.getAgriculturaData();
-        const features = this.polygons.map(p => {
-          return {
-            type: 'Feature',
-            geometry: p.the_geom,
-            properties: {
-              training_set: p.training_set,
-              interpreted: p.interpreted,
-              institution_id: p.institution_id,
-              interpret_tag_id: p.interpret_tag_id,
-              user_id: p.user_id
-            }
-          };
-        });
-
-        const geojson = {
-          type: 'geojson',
-          data: {
-            type: 'FeatureCollection',
-            features
-          }
-        }*/
-
         const geojson = await this.getPolygons();
-        console.log('Hola', geojson);
 
         const bbox = turf.bbox(geojson.data);
         console.log('bbox', bbox);
@@ -143,7 +116,7 @@ export class HomeComponent implements OnInit {
     };
 
     try {
-      this.polygons = await this.homeService.getAgriculturaData();
+      this.polygons = await this.homeService.getAgriculturaData(this.trainingSet, this.square);
       const features = this.polygons.map(p => {
         return {
           type: 'Feature',
@@ -182,13 +155,16 @@ export class HomeComponent implements OnInit {
       interpret_tag_id: this.polygonType
     };
 
-    this.resetTagger();
-    /*this.homeService.updatePoligono(this.currentPolygon.id, params).then(data => {
-      console.log('Poligono etiquetado');
-      this.resetTagger();
-    }).catch(error => {
-      console.log(error);
-    });*/
+    // this.resetTagger();
+    this.homeService
+      .updatePoligono(this.currentPolygon.id, params)
+      .then(data => {
+        console.log('Poligono etiquetado');
+        this.resetTagger();
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   async resetTagger() {

@@ -34,7 +34,7 @@
       <mat-step [stepControl]="squaresForm">
         <ng-template matStepLabel>Selecciona una región</ng-template>
         <br />
-        <div class="map" id="map" style="width: 80%; height: 45vh; border: solid 1px;"></div>
+        <div class="map" id="map" style="width: 80%; height: 40vh; border: solid 1px;"></div>
         <br />
         <div class="text-right">
           <button mat-button matStepperPrevious mat-raised-button color="warn">Anterior</button>
@@ -53,7 +53,13 @@
         </div>
         <div class="text-right">
           <button mat-button matStepperPrevious mat-raised-button color="warn">atrás</button>
-          <a mat-raised-button color="warn" mat-button routerLink="/home">Ir a etiquetador</a>
+          <a
+            mat-raised-button
+            color="warn"
+            mat-button
+            [routerLink]="'/home/' + trainingSetsForm.value.trainingSet + '/' + squaresForm.value.square"
+            >Ir a etiquetador</a
+          >
         </div>
       </mat-step>
     </mat-horizontal-stepper>
