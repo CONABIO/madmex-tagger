@@ -36,7 +36,7 @@
         <br />
         <div class="map" id="map" style="width: 80%; height: 40vh; border: solid 1px;"></div>
         <br />
-        <div class="text-right">
+        <div class="text-right navigation-buttons">
           <button mat-button matStepperPrevious mat-raised-button color="warn">Anterior</button>
           <button mat-button matStepperNext mat-raised-button color="warn" [disabled]="!squaresForm.valid">
             Siguiente
@@ -51,7 +51,7 @@
           <p>Training set: {{ trainingSetsForm.value.trainingSet }}</p>
           <p>Cuadro: {{ squaresForm.value.square }}</p>
         </div>
-        <div class="text-right">
+        <div class="text-right navigation-buttons">
           <button mat-button matStepperPrevious mat-raised-button color="warn">atrás</button>
           <a
             mat-raised-button

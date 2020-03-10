@@ -49,11 +49,11 @@ export class PreferencesComponent implements OnInit {
       const bbox = turf.bbox(geojson.data);
       console.log('bbox', bbox);
       this.map.fitBounds(bbox, {
-        padding: 20
+        padding: 40
       });
 
       console.log('data', JSON.stringify(geojson.data));
-      this.squaresForm.get('square').setValue(1);
+
       this.map.getSource('squares-src').setData(geojson.data);
     } catch (error) {
       console.log(error);
@@ -89,6 +89,19 @@ export class PreferencesComponent implements OnInit {
       });
 
       this.map.addLayer({
+        id: 'squares-text',
+        type: 'symbol',
+        source: 'squares-src',
+        layout: {
+          'text-field': ['get', 'id'],
+          'text-max-width': 60,
+          'text-size': 20
+        },
+        paint: {
+          'text-color': '#9B042B'
+        }
+      });
+      this.map.addLayer({
         id: 'squares',
         type: 'line',
         source: 'squares-src',
@@ -97,8 +110,8 @@ export class PreferencesComponent implements OnInit {
           'line-cap': 'round'
         },
         paint: {
-          'line-color': '#9B042B',
-          'line-width': 10
+          'line-color': '#888',
+          'line-width': 2
         }
       });
 
@@ -106,6 +119,13 @@ export class PreferencesComponent implements OnInit {
         const id = e.features[0].properties.id;
         console.log(id);
         this.squaresForm.get('square').setValue(id);
+        this.map.setPaintProperty('squares', 'line-color', [
+          'case',
+          ['match', ['get', 'id'], [id], true, false],
+          '#9B042B',
+          '#888'
+        ]);
+        this.map.setPaintProperty('squares', 'line-width', ['case', ['match', ['get', 'id'], id, true, false], 6, 2]);
       });
     });
   }
