@@ -12,7 +12,33 @@
   margin: 0 auto;
 }
 
-q {
-  font-style: italic;
-  quotes: "« " " »";
+.labels-container {
+  display: block;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  text-align: left;
+}
+
+.labels-container > label {
+  display: inline-block;
+  margin: 10px;
+}
+
+.labels-container > label > span {
+  display: inline-block;
+  height: 15px;
+  width: 15px;
+}
+
+.labels-container .untagged {
+  background-color: #888;
+}
+
+.labels-container .selected {
+  background-color: #fcf003;
+}
+
+.labels-container .tagged {
+  background-color: #9b042b;
 }

@@ -29,11 +29,12 @@ export class HomeComponent implements OnInit {
   currentPolygon: any = null;
   polygonTypeList: any = [];
   polygonType: any = null;
+  selectedPolygons: Array<number> = [];
 
   square: number = null;
   trainingSet: number = null;
 
-  constructor(private _route: ActivatedRoute, private quoteService: QuoteService, private homeService: HomeService) {
+  constructor(private _route: ActivatedRoute, private homeService: HomeService) {
     mapboxgl.accessToken = environment.mapbox.accessToken;
   }
 
@@ -50,6 +51,16 @@ export class HomeComponent implements OnInit {
         console.log(error);
       }
     });
+  }
+
+  updateSelectedPolygons(id: number, remove?: boolean) {
+    if (remove) {
+      const index = this.selectedPolygons.indexOf(id);
+      this.selectedPolygons.splice(index, 1);
+    } else {
+      this.selectedPolygons.push(id);
+    }
+    console.log('selected', this.selectedPolygons);
   }
 
   initMap() {
@@ -88,17 +99,51 @@ export class HomeComponent implements OnInit {
             'line-cap': 'round'
           },
           paint: {
-            'line-color': ['case', ['match', ['get', 'interpreted'], 'zzzz', true, false], '#888', '#9B042B'],
-            'line-width': 1
+            'line-color': [
+              'case',
+              ['==', ['get', 'interpreted'], true],
+              '#9B042B',
+              ['boolean', ['feature-state', 'selected'], false],
+              '#fcf003',
+              '#888'
+            ],
+            'line-width': ['case', ['boolean', ['feature-state', 'selected'], false], 4, 2]
           }
         });
 
         this.map.on('click', 'polygon-fill', e => {
           this.map.fitBounds(turf.bbox(e.features[0].geometry), {
-            padding: 50
+            padding: 200
           });
+
           const properties = e.features[0].properties;
           this.currentPolygon = properties;
+
+          if (!properties.interpreted) {
+            const fs = this.map.getFeatureState({
+              source: 'polygons-src',
+              id: e.features[0].id
+            });
+
+            if (fs.selected) {
+              this.map.removeFeatureState({
+                source: 'polygons-src',
+                id: e.features[0].id
+              });
+              this.updateSelectedPolygons(properties.id, true);
+            } else {
+              this.map.setFeatureState(
+                {
+                  source: 'polygons-src',
+                  id: e.features[0].id
+                },
+                {
+                  selected: true
+                }
+              );
+              this.updateSelectedPolygons(properties.id);
+            }
+          }
         });
       } catch (error) {
         console.log(error);
@@ -107,12 +152,13 @@ export class HomeComponent implements OnInit {
   }
 
   async getPolygons() {
-    let geojson = {
+    const geojson = {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
         features: []
-      }
+      },
+      generateId: true
     };
 
     try {
@@ -132,13 +178,7 @@ export class HomeComponent implements OnInit {
         };
       });
 
-      geojson = {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features
-        }
-      };
+      geojson.data.features = features;
 
       return geojson;
     } catch (error) {
@@ -149,7 +189,7 @@ export class HomeComponent implements OnInit {
 
   tagPolygon() {
     const params = {
-      interpreted: 1,
+      interpreted: true,
       institution_id: 1,
       user_id: 1,
       interpret_tag_id: this.polygonType
@@ -157,7 +197,7 @@ export class HomeComponent implements OnInit {
 
     // this.resetTagger();
     this.homeService
-      .updatePoligono(this.currentPolygon.id, params)
+      .updatePoligono(this.selectedPolygons.join(','), params)
       .then(data => {
         console.log('Poligono etiquetado');
         this.resetTagger();

@@ -24,7 +24,7 @@ export class HomeService {
 
   getCatCultivos() {
     return new Promise(resolve => {
-      this.http.get(`${environment.serverUrl}/madmextag/agricultura`).subscribe(
+      this.http.get(`${environment.serverUrl}/labels/50`).subscribe(
         data => {
           console.log('Cultivos', data);
           resolve(data ? data : {});
@@ -54,7 +54,7 @@ export class HomeService {
     return new Promise(resolve => {
       this.http
         // tslint:disable-next-line:max-line-length
-        .put(`http://snmb.conabio.gob.mx:3008/v1/update_poligono/${polygon_id}`, params)
+        .put(`http://snmb.conabio.gob.mx:3008/v1/update_poligono/${encodeURIComponent(polygon_id)}`, params)
         .subscribe(
           data => {
             resolve(true);
