@@ -24,7 +24,7 @@ export class HomeService {
 
   getCatCultivos() {
     return new Promise(resolve => {
-      this.http.get(`${environment.serverUrl}/labels/50`).subscribe(
+      this.http.get(`${environment.serverUrl}/labels/cultivos2019_inecol_madmex`).subscribe(
         data => {
           console.log('Cultivos', data);
           resolve(data ? data : {});

@@ -219,6 +219,7 @@ export class HomeComponent implements OnInit {
 
       this.polygonType = null;
       this.currentPolygon = null;
+      this.selectedPolygons = [];
     } catch (error) {
       console.log(error);
     }
