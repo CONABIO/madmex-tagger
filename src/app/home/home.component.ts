@@ -212,6 +212,10 @@ export class HomeComponent implements OnInit {
       const geojson = await this.getPolygons();
       this.map.getSource('polygons-src').setData(geojson.data);
 
+      this.map.removeFeatureState({
+        source: 'polygons-src'
+      });
+
       const bbox = turf.bbox(geojson.data);
       this.map.fitBounds(bbox, {
         padding: 20
