@@ -249,7 +249,8 @@ export class HomeComponent implements OnInit {
     try {
       this.polygons = await this.homeService.getAgriculturaData(this.trainingSet, this.square);
       // console.log('Poligonos', this.polygons);
-      const tags = [...new Set(this.polygons.map(p => p.automatic_label_tag_id).sort())];
+      const tagsSet = new Set(this.polygons.map(p => p.automatic_label_tag_id));
+      const tags = [...Array.from(tagsSet)].sort();
       this.minTagValue = tags.length ? Number(tags[0]) : 0;
       // console.log('min', this.minTagValue);
       // console.log('Tags', [...tags].join(','));
