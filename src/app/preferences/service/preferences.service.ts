@@ -25,8 +25,7 @@ export class PreferencesService {
     return new Promise(resolve => {
       this.http.get(`${environment.serverUrl}/square/${trainingSet}`).subscribe(
         data => {
-          console.log('Cuadros', data);
-          resolve(data ? data : {});
+          resolve(data ? data : []);
         },
         err => {
           console.log(err);

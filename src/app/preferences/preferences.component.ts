@@ -47,13 +47,10 @@ export class PreferencesComponent implements OnInit {
       };
 
       const bbox = turf.bbox(geojson.data);
-      console.log('bbox', bbox);
       this.map.fitBounds(bbox, {
         padding: 40
       });
-
-      console.log('data', JSON.stringify(geojson.data));
-
+      // console.log('data', JSON.stringify(geojson.data));
       this.map.getSource('squares-src').setData(geojson.data);
     } catch (error) {
       console.log(error);
@@ -95,7 +92,8 @@ export class PreferencesComponent implements OnInit {
         layout: {
           'text-field': ['get', 'id'],
           'text-max-width': 60,
-          'text-size': 20
+          'text-size': 14,
+          'text-allow-overlap': true
         },
         paint: {
           'text-color': '#9B042B'
@@ -117,7 +115,7 @@ export class PreferencesComponent implements OnInit {
 
       this.map.on('click', 'squares-fill', e => {
         const id = e.features[0].properties.id;
-        console.log(id);
+
         this.squaresForm.get('square').setValue(id);
         this.map.setPaintProperty('squares', 'line-color', [
           'case',
@@ -140,7 +138,6 @@ export class PreferencesComponent implements OnInit {
 
     try {
       this.trainingSets = await this._preferencesService.getTrainingSets();
-      console.log('ts', this.trainingSets);
     } catch (error) {
       console.log(error);
     }

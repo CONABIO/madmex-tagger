@@ -26,8 +26,7 @@ export class HomeService {
     return new Promise(resolve => {
       this.http.get(`${environment.serverUrl}/labels/cultivos2019_inecol_madmex`).subscribe(
         data => {
-          console.log('Cultivos', data);
-          resolve(data ? data : {});
+          resolve(data ? data : []);
         },
         err => {
           console.log(err);
